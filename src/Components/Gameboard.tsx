@@ -1,11 +1,46 @@
+import { useState } from "react";
+import { useRef } from "react";
 import "../styles/Gameboard.css";
-import { Level } from "../types/types";
+import { Card, Level } from "../types/types";
+
+const cardSelection = (
+  cards: Card[],
+  //   setCards: Function,
+  selectedCards: React.MutableRefObject<number[] | null>,
+  index: number
+): any => {
+  let selectedCardsClosure: number[] = [];
+  let cardsClosure: Card[] = cards;
+  if (selectedCards.current) selectedCardsClosure = selectedCards.current;
+
+  if (!selectedCardsClosure.length) {
+    selectedCardsClosure.push(index);
+    selectedCards.current = selectedCardsClosure;
+    return cardsClosure;
+  }
+  selectedCardsClosure.push(index);
+
+  const firstIndex = selectedCardsClosure[0];
+  const secondIndex = selectedCardsClosure[1];
+
+  if (cardsClosure[firstIndex].value === cardsClosure[secondIndex].value) {
+    cardsClosure[firstIndex].success = true;
+    cardsClosure[secondIndex].success = true;
+  }
+  //   selectedCardsClosure = [];
+  selectedCards.current = [];
+  //   setCards([...cardsClosure]);
+  return cardsClosure;
+};
 
 // This function generates an array of cards based on the given level of difficulty
-const generateCards = (level: string): number[] => {
-  let n: number; 
-  let cards: number[] = []; 
-  switch (level) { // A switch case statement to set the value of n based on the level of difficulty
+const generateCards = (level: string): Card[] => {
+  let n: number;
+  let cards: Card[] = [];
+
+  switch (
+    level // A switch case statement to set the value of n based on the level of difficulty
+  ) {
     case Level.easy:
       n = 12;
       break;
@@ -17,15 +52,16 @@ const generateCards = (level: string): number[] => {
       break;
 
     default: // default case
-      n = 0; // If the level doesn't match, set n to 0
+      // If the level doesn't match, set n to 0
+      n = 0;
       break;
   }
 
   // Generate array with values from 1 to n
   // add each value twice
   for (let i: number = 1; i <= n / 2; i++) {
-    cards.push(i);
-    cards.push(i); 
+    cards.push({ value: i, success: false });
+    cards.push({ value: i, success: false });
   }
 
   // Shuffle array using Fisher-Yates algorithm
@@ -37,14 +73,28 @@ const generateCards = (level: string): number[] => {
 };
 
 const Gameboard = (props: any) => {
-  let cards: number[] = generateCards(props.level);
+  const [cards, setCards] = useState<Card[]>(generateCards(props.level));
+
+  const selectedCards = useRef<number[] | null>([]);
 
   return (
     <div className="gameboard">
       <div className={`grid-container grid-${props.level}`}>
         {cards &&
-          cards.map((card, index) => {
-            return <div key={index} className='grid-item'>{card}</div>;
+          cards.map((card: Card, index) => {
+            return (
+              <div
+                key={index}
+                className={`grid-item ${
+                  card.success ? "grid-item-success" : ""
+                }`}
+                onClick={() =>
+                  setCards([...cardSelection(cards, selectedCards, index)])
+                }
+              >
+                {card.value}
+              </div>
+            );
           })}
       </div>
     </div>

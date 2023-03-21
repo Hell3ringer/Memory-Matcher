@@ -32,8 +32,9 @@
 }
 
 .grid-item {
-  border: 2px solid black;
-  background-color: aqua;
+  box-shadow: 2px  2px 2px 2px black;
+  border-radius: 5px;
+  background-color: var(--lime);
   width: 150px;
   height: 200px;
   /* grid-column: auto ;
@@ -43,6 +44,11 @@
   /* transform: scale(0.5); */
 }
 
+
 .grid-item:hover {
   transform: scale(1.2);
+}
+
+.grid-item-success{
+    background-color: var(--red);
 }

@@ -9,3 +9,8 @@ export enum NoOfCards {
   medium = 20,
   hard = 28,
 }
+
+export interface Card {
+  value: number;
+  success : boolean;
+}
