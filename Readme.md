@@ -24,26 +24,26 @@ Your task is to create a Memory Match game using React. The game should allow pl
 - The game should have a score system that rewards players for matching pairs quickly and accurately.
 
 #### Difficuilty level
-    Easy level:
+Easy level:
 
-    Use a smaller number of cards, such as 12 or 16.
-    Give players a longer time limit, such as 2-3 minutes.
-    Use simple images or symbols that are easy to recognize.
-    Medium level:
+Use a smaller number of cards, such as 12 or 16.
+Give players a longer time limit, such as 2-3 minutes.
+Use simple images or symbols that are easy to recognize.
+Medium level:
 
-    Use a larger number of cards, such as 20-24.
-    Give players a shorter time limit, such as 1-2 minutes.
-    Use slightly more complex images or symbols that are a bit harder to recognize.
-    Hard level:
+Use a larger number of cards, such as 20-24.
+Give players a shorter time limit, such as 1-2 minutes.
+Use slightly more complex images or symbols that are a bit harder to recognize.
+Hard level:
 
-    Use a large number of cards, such as 28-32.
-    Give players a very short time limit, such as 30-60 seconds.
-    Use more complex images or symbols that are difficult to recognize.
+Use a large number of cards, such as 28-32.
+Give players a very short time limit, such as 30-60 seconds.
+Use more complex images or symbols that are difficult to recognize.
 
-    You can implement these difficulty levels by creating different configurations for the game board and the timer based on the level selected by the player. For example, you can create an object that contains the number of cards, the time limit, and the images for each level. When the player selects a level, you can retrieve the appropriate configuration from the object and use it to initialize the game board and the timer.
+You can implement these difficulty levels by creating different configurations for the game board and the timer based on the level selected by the player. For example, you can create an object that contains the number of cards, the time limit, and the images for each level. When the player selects a level, you can retrieve the appropriate configuration from the object and use it to initialize the game board and the timer.
 
-    You can also provide feedback to the player about their performance based on the level selected. For example, you can display a message after each game that tells the player how long it took them to complete the game and how many pairs they matched correctly. You can also give them a score based on their performance and display it on the screen. This will provide an additional incentive for players to improve their performance and try different difficulty levels.
-> Bonus Features:
+You can also provide feedback to the player about their performance based on the level selected. For example, you can display a message after each game that tells the player how long it took them to complete the game and how many pairs they matched correctly. You can also give them a score based on their performance and display it on the screen. This will provide an additional incentive for players to improve their performance and try different difficulty levels.
+#### Bonus Features:
 
 - Allow players to choose the number of cards and the types of images or symbols used in the game.
 - Allow players to customize the game's theme or style with different colors, fonts, or backgrounds.
