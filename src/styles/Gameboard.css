@@ -32,7 +32,7 @@
 }
 
 .grid-item {
-  box-shadow: 2px  2px 2px 2px black;
+  box-shadow: 2px 2px 2px 2px black;
   border-radius: 5px;
   background-color: var(--lime);
   width: 150px;
@@ -44,11 +44,16 @@
   /* transform: scale(0.5); */
 }
 
-
 .grid-item:hover {
   transform: scale(1.2);
 }
 
-.grid-item-success{
-    background-color: var(--red);
+.grid-item-success {
+  background-color: var(--red);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.grid-item-wrapper {
+  cursor: not-allowed;
 }

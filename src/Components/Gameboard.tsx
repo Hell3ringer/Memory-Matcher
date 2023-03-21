@@ -3,12 +3,31 @@ import { useRef } from "react";
 import "../styles/Gameboard.css";
 import { Card, Level } from "../types/types";
 
-const cardSelection = (
+const delayOfCardFlip = 1 * 1000;
+const delay = (delayInms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, delayInms));
+};
+
+const sameArray = (firstArray: Card[], secondArray: Card[]): boolean => {
+  if (!firstArray || firstArray.length !== secondArray.length) return false;
+
+  firstArray.forEach((card: Card, index: number) => {
+    const secondCard = secondArray[index];
+    if (
+      card.backValue !== secondCard.backValue ||
+      card.showBack !== secondCard.showBack
+    )
+      return false;
+  });
+  return true;
+};
+
+const matchTwoCards = async (
   cards: Card[],
   //   setCards: Function,
   selectedCards: React.MutableRefObject<number[] | null>,
   index: number
-): any => {
+): Promise<Card[]> => {
   let selectedCardsClosure: number[] = [];
   let cardsClosure: Card[] = cards;
   if (selectedCards.current) selectedCardsClosure = selectedCards.current;
@@ -23,14 +42,42 @@ const cardSelection = (
   const firstIndex = selectedCardsClosure[0];
   const secondIndex = selectedCardsClosure[1];
 
-  if (cardsClosure[firstIndex].value === cardsClosure[secondIndex].value) {
+  if (
+    cardsClosure[firstIndex].backValue === cardsClosure[secondIndex].backValue
+  ) {
     cardsClosure[firstIndex].success = true;
     cardsClosure[secondIndex].success = true;
+  } else {
+    await delay(delayOfCardFlip);
+    cardsClosure[firstIndex].showBack = false;
+    cardsClosure[secondIndex].showBack = false;
   }
   //   selectedCardsClosure = [];
   selectedCards.current = [];
   //   setCards([...cardsClosure]);
   return cardsClosure;
+};
+
+const cardSelection = async (
+  cards: Card[],
+  setCards: Function,
+  selectedCards: React.MutableRefObject<number[] | null>,
+  index: number
+): Promise<any> => {
+  console.log("clicked....");
+
+  let cardsClosure: Card[] = cards;
+  if (!cardsClosure[index].showBack) {
+    cardsClosure[index].showBack = true;
+    // render card
+    setCards([...cardsClosure]);
+  }
+
+  let newCardClosure = await matchTwoCards(cards, selectedCards, index);
+  if (sameArray(cards, newCardClosure)) {
+    //render card
+    setCards([...newCardClosure]);
+  }
 };
 
 // This function generates an array of cards based on the given level of difficulty
@@ -60,8 +107,18 @@ const generateCards = (level: string): Card[] => {
   // Generate array with values from 1 to n
   // add each value twice
   for (let i: number = 1; i <= n / 2; i++) {
-    cards.push({ value: i, success: false });
-    cards.push({ value: i, success: false });
+    cards.push({
+      frontValue: -1,
+      backValue: i,
+      showBack: false,
+      success: false,
+    });
+    cards.push({
+      frontValue: -1,
+      backValue: i,
+      showBack: false,
+      success: false,
+    });
   }
 
   // Shuffle array using Fisher-Yates algorithm
@@ -84,15 +141,23 @@ const Gameboard = (props: any) => {
           cards.map((card: Card, index) => {
             return (
               <div
-                key={index}
-                className={`grid-item ${
-                  card.success ? "grid-item-success" : ""
-                }`}
-                onClick={() =>
-                  setCards([...cardSelection(cards, selectedCards, index)])
+                className={
+                  card.showBack || card.success ? "grid-item-wrapper" : ""
                 }
               >
-                {card.value}
+                <div
+                  key={index}
+                  className={`grid-item ${
+                    card.showBack ? "grid-item-success" : ""
+                  }`}
+                  onClick={() =>
+                    cardSelection(cards, setCards, selectedCards, index)
+                  }
+                >
+                  {card.showBack || card.success
+                    ? card.backValue
+                    : card.frontValue}
+                </div>
               </div>
             );
           })}

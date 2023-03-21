@@ -11,6 +11,8 @@ export enum NoOfCards {
 }
 
 export interface Card {
-  value: number;
+  frontValue: number;
+  backValue : number;
+  showBack : boolean;
   success : boolean;
 }
