@@ -1,0 +1,55 @@
+* {
+  color: var(--red);
+}
+
+.login {
+  border: 2px solid var(--yellow);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 50%;
+  align-items: center;
+  font-size: 1.2em;
+  justify-content: space-between;
+  background-color: var(--yellow);
+  opacity: 0.9;
+}
+
+.radioBtnGrp {
+  display: flex;
+}
+
+.inputText {
+  /* border: 1px solid var(--lime); */
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: var(--yellow);
+}
+.inputText:focus-visible {
+  outline: none;
+}
+.inputText::placeholder {
+  color: var(--red);
+}
+
+.success {
+  border: 3px solid var(--green);
+}
+.error {
+  border: 3px solid var(--red);
+}
+
+.submitBtn {
+  font-size: 1em;
+  width: 80%;
+  background-color: var(--yellow);
+  border: 2px solid black;
+  border-radius: 10px;
+}
+.submitBtn:hover {
+  background-color: var(--yellow);
+  filter: brightness(110%);
+}
