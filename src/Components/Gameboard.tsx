@@ -8,6 +8,11 @@ const delay = (delayInms: number) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
+const mapToImage = {
+  "1": "/assets/images/1",
+};
+
+
 const sameArray = (firstArray: Card[], secondArray: Card[]): boolean => {
   if (!firstArray || firstArray.length !== secondArray.length) return false;
 
@@ -45,6 +50,7 @@ const matchTwoCards = async (
   if (
     cardsClosure[firstIndex].backValue === cardsClosure[secondIndex].backValue
   ) {
+    await delay(delayOfCardFlip);
     cardsClosure[firstIndex].success = true;
     cardsClosure[secondIndex].success = true;
   } else {
@@ -61,6 +67,8 @@ const matchTwoCards = async (
 const cardSelection = async (
   cards: Card[],
   setCards: Function,
+  loading: boolean,
+  setLoading: Function,
   selectedCards: React.MutableRefObject<number[] | null>,
   index: number
 ): Promise<any> => {
@@ -72,8 +80,9 @@ const cardSelection = async (
     // render card
     setCards([...cardsClosure]);
   }
-
+  setLoading(true);
   let newCardClosure = await matchTwoCards(cards, selectedCards, index);
+  setLoading(false);
   if (sameArray(cards, newCardClosure)) {
     //render card
     setCards([...newCardClosure]);
@@ -131,32 +140,47 @@ const generateCards = (level: string): Card[] => {
 
 const Gameboard = (props: any) => {
   const [cards, setCards] = useState<Card[]>(generateCards(props.level));
+  const [loading, setLoading] = useState<boolean>(false);
 
   const selectedCards = useRef<number[] | null>([]);
 
   return (
-    <div className="gameboard">
-      <div className={`grid-container grid-${props.level}`}>
+    <div className={`gameboard ${loading ? "loading-wrapper" : ""}`}>
+      <div
+        className={`grid-container grid-${props.level} ${
+          loading ? "loading" : ""
+        }`}
+      >
         {cards &&
           cards.map((card: Card, index) => {
             return (
               <div
+                key={index}
                 className={
                   card.showBack || card.success ? "grid-item-wrapper" : ""
                 }
               >
                 <div
-                  key={index}
                   className={`grid-item ${
                     card.showBack ? "grid-item-success" : ""
                   }`}
                   onClick={() =>
-                    cardSelection(cards, setCards, selectedCards, index)
+                    cardSelection(
+                      cards,
+                      setCards,
+                      loading,
+                      setLoading,
+                      selectedCards,
+                      index
+                    )
                   }
                 >
-                  {card.showBack || card.success
-                    ? card.backValue
-                    : card.frontValue}
+                  {card.showBack || card.success ? (
+                    // card.backValue
+                    <img width='150px' height='200px' src={`assets/images/${card.backValue}.png`}></img>
+                  ) : (
+                    <img width='150px' height='200px' src="/assets/images/-1.jpg" alt="card back face"></img>
+                  )}
                 </div>
               </div>
             );

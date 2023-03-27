@@ -14,7 +14,7 @@
 }
 .bg {
   position: absolute;
-  background-image: url("./assets/images/cards-bg.jpg");
+  background-image: url("../public/assets/images/cards-bg.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(5px);

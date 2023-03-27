@@ -34,7 +34,7 @@
 .grid-item {
   box-shadow: 2px 2px 2px 2px black;
   border-radius: 5px;
-  background-color: var(--lime);
+  /* background-color: var(--lime); */
   width: 150px;
   height: 200px;
   /* grid-column: auto ;
@@ -56,4 +56,12 @@
 
 .grid-item-wrapper {
   cursor: not-allowed;
+}
+
+
+.loading-wrapper{
+  cursor:progress;
+}
+.loading{
+  pointer-events: none;
 }
